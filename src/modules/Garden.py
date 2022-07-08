@@ -66,3 +66,13 @@ class Garden:
                 self.plant_cost += plant.cost * number
             else:
                 'o well, lets try a different garden'
+
+    def checkGarden(self):
+        """
+        a method that tells what you garden currently looks like
+        """
+        print('These are the plants in your garden:')
+        for plant in self.plants:
+            print(plant.name,':',plant.variety)
+        print('You currently have {} sqft. remaining'.format(self.sqft))
+        print('You will have to spend {} to plant the garden'.format(self.plant_cost))
