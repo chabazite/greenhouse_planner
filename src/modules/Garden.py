@@ -1,7 +1,10 @@
+from datetime import datetime
+
+
 class Garden:
 
-    def __init__(self, name, length, width, sqft, type, 
-     sunlight, beds, plant_cost, soil='soil'):
+    def __init__(self, name, length, width, type, 
+     sunlight, soil='soil'):
         """
         Class for visualizing and storing the user's garden data
 
@@ -9,8 +12,9 @@ class Garden:
             name (string): nickname for the garden
             length (int): length of the garden
             width (int): width of the garden
-            sqft (int): square feet of actual planting area
+            total_sqft (int): square feet of garden (length * width)
             type (string): raised beds, greenhouse, etc.
+            planted_sqft(int): total sqft of beds planted
             sunlight (int): hours of full sunlight the garden recieves
             beds (int): how many individual beds are there. 
             plants (list): list of current plant objects in garden
@@ -21,15 +25,18 @@ class Garden:
         self.name = name
         self.length = length
         self.width = width
-        self.sqft = sqft
+        self.max_sqft = length * width
         self.type = type
+        self.plantable_sqft = 0
         self.sunlight = sunlight
-        self.beds = beds
-        self.plant_cost = plant_cost
+        self.beds = 0
+        self.remaining_sqft = 0
+        self.plant_cost = 0
         self.soil = soil
         self.plants = []
+        self.notes = []
 
-    def Addbed(self, n, length, width):
+    def add_bed(self, n, length, width):
         """
         method to add more beds to your garden. These all need to be the same length and width.
 
@@ -38,13 +45,15 @@ class Garden:
             length (int): length of individual bed
             width (int): width of individual bed
         """
-        self.beds += n
-
         sqft_beds = n * length * width
+        if self.max_sqft < (self.plantable_sqft + sqft_beds):
+            return 'Your garden is full'
+        else:
+            self.beds += n
+            self.plantable_sqft += sqft_beds
+            self.remaining_sqft += sqft_beds
 
-        self.sqft += sqft_beds
-
-    def Addplant(self, plant, number):
+    def add_plant(self, plant, number):
         """
         add a number of a defined plant class to the garden
 
@@ -52,27 +61,49 @@ class Garden:
             plant (_type_): type of plant to add to the garden
             number (int): number of plants to add to the garden
         """
-        if plant.sunlight <= self.sunlight:
+        if (plant.sunlight <= self.sunlight) and (plant.sqft*number <= self.remaining_sqft):
             for _ in range(number):
                 self.plants.append(plant)
-            self.sqft -= plant.sqft * number
+            self.remaining_sqft -= plant.sqft * number
             self.plant_cost += plant.cost * number
-        else:
+        elif plant.sunlight > self.sunlight:
             answer = input("This plant needs more sunlight than your garden has, do you still wish to plant (y/n): ")
             if answer == 'y':
                 for _ in range(number):
                     self.plants.append(plant)
-                self.sqft -= plant.sqft * number
+                self.remaining_sqft -= plant.sqft * number
                 self.plant_cost += plant.cost * number
             else:
-                'o well, lets try a different garden'
+                return 'o well, lets try a different garden'
+        elif plant.sqft*number > self.remaining_sqft:
+            plant_possible = int(self.remaining_sqft/plant.sqft)
 
-    def checkGarden(self):
+            answer = input(f"This garden doesn't have enough room to plant this many {plant.name}, would you like to plant {plant_possible}? (y/n): ")
+            if answer == 'y':
+                for _ in range(plant_possible):
+                    self.plants.append(plant)
+                self.remaining_sqft -= plant.sqft * plant_possible
+                self.plant_cost += plant.cost * plant_possible
+            else:
+                return 'o well, lets try a different garden'
+
+    def check_garden(self):
         """
         a method that tells what you garden currently looks like
         """
         print('These are the plants in your garden:')
         for plant in self.plants:
             print(plant.name,':',plant.variety)
-        print('You currently have {} sqft. remaining'.format(self.sqft))
-        print('You will have to spend {} to plant the garden'.format(self.plant_cost))
+        print('You currently have {} sqft. remaining of {} worth of beds'.format(self.remaining_sqft,self.plantable_sqft))
+        print('You will have to spend ${} to plant the garden'.format(self.plant_cost))
+
+    def add_notes(self, note):
+        """
+        method to add to the note string for this plant 
+        Args:
+            note (string): note to add about the plant
+        """
+        today = datetime.now()
+        datetime_string = today.strftime("%d/%m/%Y %H:%M:%S")
+        note = datetime_string +"--> "+ note
+        self.notes.append(note)

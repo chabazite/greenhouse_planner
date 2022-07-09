@@ -1,4 +1,3 @@
-from datetime import datetime
 
 class Plants:
 
@@ -28,15 +27,4 @@ class Plants:
         self.soil = soil
         self.plant_date = plant_date
         self.sqft = sqft
-        self.notes = []
 
-    def Addnotes(self, note):
-        """
-        method to add to the note string for this plant 
-        Args:
-            note (string): note to add about the plant
-        """
-        today = datetime.now()
-        datetime_string = today.strftime("%d/%m/%Y %H:%M:%S")
-        note = datetime_string +"--> "+ note
-        self.notes.append(note)

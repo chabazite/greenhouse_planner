@@ -3,9 +3,15 @@
 
 ## Business Case
 <a name="Business_Case"></a>
-To be expanded in the future. Just the README structure is available now.
+This is a knowledge-based personal project for me. I tasked myself with creating a project that relied heavily on classes and methods. At the same time, I am always looking to work on projects I find relevent. In my own life, I love planning out my garden. However, I find that excel sheets can lead to something not as informative as I hoped for. Additionally, it takes a while to make one each time I want to plan a  new garden. 
 
-Right now, I am working on an app that will help me plan out my gardens and greenhouses. This is to help me better my knowledge in OOP and AWS.
+With classes and methods, I wanted to build out something that could save a Garden for me and its particular attributes such as sunlight and soil fertility. I wanted to be able to store different plants in each garden, with their own attributes about the plant. With that I had the following goals:
+
+1. Create a Garden & Plant Class
+2. Have the garden respond to plant additions to optimize garden placement (sunlight, bed space, etc.)
+3. Create Methods that allow adding bed space and plants to the garden
+4. Turn this into a web app to share. 
+
 
 ## Table of Contents
 <details open>
@@ -70,7 +76,11 @@ Right now, I am working on an app that will help me plan out my gardens and gree
 <br>
 
 
- 
+    ├── Python
+        ├── datetime
+        ├── unittest 
+        ├── Pypi       
+        └── AWS    
  ------------
  </details>
 
@@ -81,6 +91,8 @@ Right now, I am working on an app that will help me plan out my gardens and gree
 <summary>Show/Hide</summary>
 <br>
 
+The package works as intended. It is simple and allows for the creation of garden objects and plant objects. The plants can be stored in a list within each garden. The garden responds to the addition of any plant with checks ensuring it has the proper sunlight and space to house the plant. Additionally, it will provide the total cost of planting the garden as well as update your remaining sqft left for planting. 
+
 </details>
   
 ## Future Improvements
@@ -89,6 +101,7 @@ Right now, I am working on an app that will help me plan out my gardens and gree
 <summary>Show/Hide</summary>
 <br>
 
+I will be turning this package into a webapp to provide a GUI. 
 
 </details>
 
