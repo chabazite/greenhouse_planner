@@ -52,6 +52,10 @@ class Garden:
             n (int): number of beds to add to your garden
             length (int): length of individual bed
             width (int): width of individual bed
+        Returns:
+            self.remaining_sqft (int): integer of non planted area left to be planted
+            self.plantable_sqft (int): total plantable area (including already planted)
+            self.max_sqft (int): total size of the garden
         """
         sqft_beds = n * length * width
         if self.max_sqft < (self.plantable_sqft + sqft_beds):
@@ -60,14 +64,18 @@ class Garden:
             self.beds += n
             self.plantable_sqft += sqft_beds
             self.remaining_sqft += sqft_beds
+        
+        return self.remaining_sqft, self.plantable_sqft, self.max_sqft
 
     def add_plant(self, plant, number):
         """
         add a number of a defined plant class to the garden
 
         Args:
-            plant (_type_): type of plant to add to the garden
+            plant (string): type of plant to add to the garden
             number (int): number of plants to add to the garden
+        Returns:
+            self.plants(list): a list of all the plants in the garden
         """
         if (plant.sunlight <= self.sunlight) and (plant.sqft*number <= self.remaining_sqft):
             add_plant_update(number)
@@ -87,9 +95,15 @@ class Garden:
             else:
                 return 'o well, lets try a different garden'
 
+        return self.plants
+
     def check_garden(self):
         """
         a method that tells what you garden currently looks like
+
+        Returns:
+            self.plants (list): list of all the plants in the garden
+            self.plant_cost(float): total cost of plants in the garden
         """
         print('These are the plants in your garden:')
         for plant in self.plants:
@@ -97,14 +111,20 @@ class Garden:
         print('You currently have {} sqft. remaining of {} worth of beds'.format(self.remaining_sqft,self.plantable_sqft))
         print('You will have to spend ${} to plant the garden'.format(self.plant_cost))
 
+        return self.plant_cost
+
     def add_notes(self, note):
         """
         method to add to the note string for this plant 
         Args:
             note (string): note to add about the plant
+        Returns:
+            self.notes (list): list of the notes that have been appended
         """
         today = datetime.now()
         datetime_string = today.strftime("%d/%m/%Y %H:%M:%S")
         note = datetime_string +"--> "+ note
         self.notes.append(note)
+
+        return self.notes
 
