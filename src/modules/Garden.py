@@ -1,5 +1,13 @@
 from datetime import datetime
 
+def add_plant_update(number):
+    """
+    this function will add the plant to a garden, update the remaining sqft and update the total plant cost. 
+    """
+    for _ in range(number):
+        self.plants.append(plant)
+    self.remaining_sqft -= plant.sqft * number
+    self.plant_cost += plant.cost * number
 
 class Garden:
 
@@ -62,28 +70,20 @@ class Garden:
             number (int): number of plants to add to the garden
         """
         if (plant.sunlight <= self.sunlight) and (plant.sqft*number <= self.remaining_sqft):
-            for _ in range(number):
-                self.plants.append(plant)
-            self.remaining_sqft -= plant.sqft * number
-            self.plant_cost += plant.cost * number
+            add_plant_update(number)
+        # If the plant needs more sunlight than the garden can offer
         elif plant.sunlight > self.sunlight:
             answer = input("This plant needs more sunlight than your garden has, do you still wish to plant (y/n): ")
             if answer == 'y':
-                for _ in range(number):
-                    self.plants.append(plant)
-                self.remaining_sqft -= plant.sqft * number
-                self.plant_cost += plant.cost * number
+                add_plant_update(number)
             else:
                 return 'o well, lets try a different garden'
+        # If the plants need more space than the garden can offer
         elif plant.sqft*number > self.remaining_sqft:
             plant_possible = int(self.remaining_sqft/plant.sqft)
-
             answer = input(f"This garden doesn't have enough room to plant this many {plant.name}, would you like to plant {plant_possible}? (y/n): ")
             if answer == 'y':
-                for _ in range(plant_possible):
-                    self.plants.append(plant)
-                self.remaining_sqft -= plant.sqft * plant_possible
-                self.plant_cost += plant.cost * plant_possible
+                add_plant_update(plant_possible)
             else:
                 return 'o well, lets try a different garden'
 
@@ -107,3 +107,4 @@ class Garden:
         datetime_string = today.strftime("%d/%m/%Y %H:%M:%S")
         note = datetime_string +"--> "+ note
         self.notes.append(note)
+
